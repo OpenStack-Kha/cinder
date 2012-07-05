@@ -21,7 +21,6 @@ Handles all requests relating to volumes.
 """
 
 import functools
-import sys
 
 from eventlet import greenthread
 
@@ -34,10 +33,7 @@ from cinder import rpc
 from cinder import utils
 from cinder.db import base
 
-utils.default_flagfile()
-flags.FLAGS(sys.argv)
 FLAGS = flags.FLAGS
-rpc.register_opts(FLAGS)
 flags.DECLARE('storage_availability_zone', 'cinder.volume.manager')
 
 LOG = logging.getLogger(__name__)
