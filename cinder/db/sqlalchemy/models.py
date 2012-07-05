@@ -1000,6 +1000,13 @@ class InstanceFault(BASE, CinderBase):
     details = Column(Text)
 
 
+class Share(BASE, CinderBase):
+    """Represents an NFS and CIFS shares."""
+    __tablename__ = 'shares'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255))
+
+
 def register_models():
     """Register Models and create metadata.
 
