@@ -191,7 +191,7 @@ class VolumeManager(manager.SchedulerDependentManager):
             # dict containing provider_location for cloned volume
             # and clone status
             model_update, cloned = self.driver.clone_image(
-                volume_ref, image_location)
+                volume_ref, image_location, image_id)
             if not cloned:
                 model_update = self.driver.create_volume(volume_ref)
 
