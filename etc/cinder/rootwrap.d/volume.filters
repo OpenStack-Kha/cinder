@@ -53,6 +53,7 @@ truncate: CommandFilter, truncate, root
 chmod: CommandFilter, chmod, root
 rm: CommandFilter, rm, root
 lvs: CommandFilter, lvs, root
+find: CommandFilter, find, root
 
 # cinder/volumes/drivers/hds/hds.py: 
 hus-cmd: CommandFilter, hus-cmd, root
