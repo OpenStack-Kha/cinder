@@ -353,6 +353,7 @@ class NetAppNFSDriver(nfs.NfsDriver):
         """
         cloned = False
         share = None
+        image_location = self._construct_image_nfs_direct_url(image_location)
         try:
             cache_result = self._find_image_in_cache(image_id)
             if cache_result:
