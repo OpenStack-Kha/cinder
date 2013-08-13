@@ -227,7 +227,7 @@ class GlanceImageService(object):
         or None if this attribute is not shown by Glance.
         """
         try:
-            client = GlanceClientWrapper()
+            client = GlanceClientWrapper(version=2)
             image_meta = client.call(context, 'get', image_id)
         except Exception:
             _reraise_translated_image_exception(image_id)
@@ -235,7 +235,9 @@ class GlanceImageService(object):
         if not self._is_image_available(context, image_meta):
             raise exception.ImageNotFound(image_id=image_id)
 
-        return getattr(image_meta, 'direct_url', None)
+
+        return (getattr(image_meta, 'direct_url', None),
+                getattr(image_meta, 'locations', None))
 
     def download(self, context, image_id, data):
         """Calls out to Glance for metadata and data and writes data."""

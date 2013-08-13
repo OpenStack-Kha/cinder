@@ -26,6 +26,7 @@ from cinder.image import image_utils
 from cinder.openstack.common import log as logging
 from cinder import units
 from cinder.volume import driver
+import urlparse
 
 LOG = logging.getLogger(__name__)
 
@@ -477,3 +478,50 @@ class NfsDriver(RemoteFsDriver):
         data['reserved_percentage'] = 0
         data['QoS_support'] = False
         self._stats = data
+
+    def _construct_image_nfs_direct_url(self, image_location):
+        direct_url, locations = image_location
+
+        # Locations will be always a list of one until
+        # bp multiple-image-locations is introduced
+        if not locations:
+            return direct_url
+
+        location = locations[0]
+        url = location['url']
+
+        if not location['metadata']:
+            return url
+
+        location_type = location['metadata'].get('type')
+        if not location_type or location_type.lower() != "nfs":
+            return url
+
+        share_location = location['metadata'].get('share_location')
+        mount_point = location['metadata'].get('mount_point')
+
+        if not share_location or not mount_point:
+            return url
+
+        url_parse = urlparse.urlparse(url)
+        abs_path = os.path.join(url_parse.netloc, url_parse.path)
+
+        rel_path = os.path.relpath(abs_path, mount_point)
+
+        direct_url = "%s/%s" % (share_location, rel_path)
+
+        return direct_url
+
+
+
+
+
+
+
+
+
+
+
+
+
+
